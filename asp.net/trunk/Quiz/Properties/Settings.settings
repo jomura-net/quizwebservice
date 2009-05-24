@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="Quiz_net_jomora_QuizService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://jomora.net:8080/Quiz2/QuizService.asmx?AspxAutoDetectCookieSupport=1</Value>
+      <Value Profile="(Default)">http://localhost:2511/QuizService.asmx?AspxAutoDetectCookieSupport=1</Value>
     </Setting>
   </Settings>
 </SettingsFile>

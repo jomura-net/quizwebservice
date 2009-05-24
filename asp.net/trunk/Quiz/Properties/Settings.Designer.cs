@@ -26,7 +26,7 @@ namespace Quiz.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://jomora.net:8080/Quiz2/QuizService.asmx?AspxAutoDetectCookieSupport=1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:2511/QuizService.asmx?AspxAutoDetectCookieSupport=1")]
         public string Quiz_net_jomora_QuizService {
             get {
                 return ((string)(this["Quiz_net_jomora_QuizService"]));
