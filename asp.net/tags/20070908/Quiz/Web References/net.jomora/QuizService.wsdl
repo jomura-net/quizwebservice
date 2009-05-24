@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://jomora.net/Quiz/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://jomora.net/Quiz/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://jomora.net/Quiz/">
+      <s:element name="loadQuestion">
+        <s:complexType />
+      </s:element>
+      <s:element name="loadQuestionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="loadQuestionResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getQuestion">
+        <s:complexType />
+      </s:element>
+      <s:element name="getQuestionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getQuestionResult" type="tns:Question" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Question">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="quizTitle" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="groupName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="sentence" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="choices" type="tns:ArrayOfChoice" />
+          <s:element minOccurs="0" maxOccurs="1" name="comment" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfChoice">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Choice" nillable="true" type="tns:Choice" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Choice">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="correct" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="text" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getTitles">
+        <s:complexType />
+      </s:element>
+      <s:element name="getTitlesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getTitlesResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getQuestionByTitle">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="title" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getQuestionByTitleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getQuestionByTitleResult" type="tns:Question" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="loadQuestionSoapIn">
+    <wsdl:part name="parameters" element="tns:loadQuestion" />
+  </wsdl:message>
+  <wsdl:message name="loadQuestionSoapOut">
+    <wsdl:part name="parameters" element="tns:loadQuestionResponse" />
+  </wsdl:message>
+  <wsdl:message name="getQuestionSoapIn">
+    <wsdl:part name="parameters" element="tns:getQuestion" />
+  </wsdl:message>
+  <wsdl:message name="getQuestionSoapOut">
+    <wsdl:part name="parameters" element="tns:getQuestionResponse" />
+  </wsdl:message>
+  <wsdl:message name="getTitlesSoapIn">
+    <wsdl:part name="parameters" element="tns:getTitles" />
+  </wsdl:message>
+  <wsdl:message name="getTitlesSoapOut">
+    <wsdl:part name="parameters" element="tns:getTitlesResponse" />
+  </wsdl:message>
+  <wsdl:message name="getQuestionByTitleSoapIn">
+    <wsdl:part name="parameters" element="tns:getQuestionByTitle" />
+  </wsdl:message>
+  <wsdl:message name="getQuestionByTitleSoapOut">
+    <wsdl:part name="parameters" element="tns:getQuestionByTitleResponse" />
+  </wsdl:message>
+  <wsdl:portType name="QuizServiceSoap">
+    <wsdl:operation name="loadQuestion">
+      <wsdl:input message="tns:loadQuestionSoapIn" />
+      <wsdl:output message="tns:loadQuestionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getQuestion">
+      <wsdl:input message="tns:getQuestionSoapIn" />
+      <wsdl:output message="tns:getQuestionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getTitles">
+      <wsdl:input message="tns:getTitlesSoapIn" />
+      <wsdl:output message="tns:getTitlesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getQuestionByTitle">
+      <wsdl:input message="tns:getQuestionByTitleSoapIn" />
+      <wsdl:output message="tns:getQuestionByTitleSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="QuizServiceSoap" type="tns:QuizServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="loadQuestion">
+      <soap:operation soapAction="http://jomora.net/Quiz/loadQuestion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getQuestion">
+      <soap:operation soapAction="http://jomora.net/Quiz/getQuestion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTitles">
+      <soap:operation soapAction="http://jomora.net/Quiz/getTitles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getQuestionByTitle">
+      <soap:operation soapAction="http://jomora.net/Quiz/getQuestionByTitle" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="QuizServiceSoap12" type="tns:QuizServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="loadQuestion">
+      <soap12:operation soapAction="http://jomora.net/Quiz/loadQuestion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getQuestion">
+      <soap12:operation soapAction="http://jomora.net/Quiz/getQuestion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTitles">
+      <soap12:operation soapAction="http://jomora.net/Quiz/getTitles" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getQuestionByTitle">
+      <soap12:operation soapAction="http://jomora.net/Quiz/getQuestionByTitle" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="QuizService">
+    <wsdl:port name="QuizServiceSoap" binding="tns:QuizServiceSoap">
+      <soap:address location="http://localhost:2511/QuizService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="QuizServiceSoap12" binding="tns:QuizServiceSoap12">
+      <soap12:address location="http://localhost:2511/QuizService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
