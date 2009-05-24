@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.Caching;
 using System.Collections.Generic;
 using System.Threading;
+using System.Collections.ObjectModel;
 
 namespace Quiz
 {
@@ -12,10 +13,10 @@ namespace Quiz
     public class ScheduleService
     {
         private static ScheduleService singleton = new ScheduleService();
-        private static Cache cache = null;
-        private static Boolean isExecuting = false;
+        private static Cache cache;
+        private static Boolean isExecuting;
         private String m_cacheKey = "ScheduleService";
-        private List<ISchedule> m_tasks = new List<ISchedule>();
+        private Collection<ISchedule> m_tasks = new Collection<ISchedule>();
 
         public static ScheduleService Singleton
         {
@@ -30,7 +31,7 @@ namespace Quiz
             get { return this.m_cacheKey; }
             set { this.m_cacheKey = value; }
         }
-        public List<ISchedule> Tasks
+        public Collection<ISchedule> Tasks
         {
             get { return this.m_tasks; }
         }
@@ -59,7 +60,7 @@ namespace Quiz
         }
         private static void Tick(String inKey, Object inValue, CacheItemRemovedReason inReason)
         {
-            List<ISchedule> TaskList = new List<ISchedule>();
+            //List<ISchedule> TaskList = new List<ISchedule>();
 
             if (ScheduleService.isExecuting == false)
             {
@@ -87,6 +88,7 @@ namespace Quiz
                             }
                             catch
                             {
+                                //Do nothing
                             }
                         }
                         ScheduleService.isExecuting = false;

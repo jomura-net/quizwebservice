@@ -1,23 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Services;
-using System.ComponentModel;
-using System.Xml;
 using System.Configuration;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Web.Services.Protocols;
-using System.Web.Services.Description;
+using System.Xml;
 
 namespace Quiz
 {
     /// <summary>
-    /// Quiz Web Service
+    /// QuizService の概要の説明です
     /// </summary>
-    [WebService(Namespace = "http://jomora.net/Quiz/")]
+    [WebService(Namespace = "http://jomura.net/Quiz/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
-    [ToolboxItem(false)]
-    //[SoapRpcService(Use = SoapBindingUse.Literal)]
+    [System.ComponentModel.ToolboxItem(false)]
+    // この Web サービスを、スクリプトから ASP.NET AJAX を使用して呼び出せるようにするには、次の行のコメントを解除します。 
+    [System.Web.Script.Services.ScriptService]
     public class QuizService : System.Web.Services.WebService
     {
         private static List<Question> m_questionList;
@@ -39,6 +36,7 @@ namespace Quiz
             List<string> titles = new List<string>();
 
             string qmlDir = ConfigurationManager.AppSettings["qmlDir"];
+            qmlDir = System.IO.Path.Combine(Server.MapPath("."), qmlDir);
             string[] files = System.IO.Directory.GetFiles(qmlDir, "*.qml");
             // +.qmlファイルの読み込み
             foreach (string file in files)
@@ -137,5 +135,5 @@ namespace Quiz
             }
             return list.ToArray();
         }
-    }
-}
+    }//eof class
+}//eof namespace
