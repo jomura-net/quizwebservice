@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+ <globalConfiguration>
+  <parameter name="adminPassword" value="password"/>
+  <parameter name="attachments.Directory" value="C:/Inetpub/tomcat_webapps/quiz/WEB-INF/attachments"/>
+  <parameter name="disablePrettyXML" value="true"/>
+  <parameter name="sendMultiRefs" value="true"/>
+  <parameter name="sendXsiTypes" value="true"/>
+  <parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl"/>
+  <parameter name="sendXMLDeclaration" value="true"/>
+  <requestFlow>
+   <handler type="java:org.apache.axis.handlers.JWSHandler">
+    <parameter name="scope" value="session"/>
+   </handler>
+   <handler type="java:org.apache.axis.handlers.JWSHandler">
+    <parameter name="scope" value="request"/>
+    <parameter name="extension" value=".jwr"/>
+   </handler>
+  </requestFlow>
+ </globalConfiguration>
+ <handler name="LocalResponder" type="java:org.apache.axis.transport.local.LocalResponder"/>
+ <handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper"/>
+ <handler name="Authenticate" type="java:org.apache.axis.handlers.SimpleAuthenticationHandler"/>
+ <service name="QuizService" provider="java:RPC">
+  <parameter name="allowedMethods" value="*"/>
+  <parameter name="wsdlPortType" value="Quiz"/>
+  <parameter name="scope" value="Application"/>
+  <parameter name="className" value="jomora.quiz.QuizServiceSoapBindingSkeleton"/>
+  <parameter name="wsdlServicePort" value="QuizService"/>
+  <parameter name="wsdlTargetNamespace" value="urn:Quiz"/>
+  <parameter name="wsdlServiceElement" value="QuizService"/>
+  <parameter name="qmlDir" value="C:/Inetpub/iis_wwwroot/Quiz/data"/>
+  <parameter name="TempFilePath" value="C:/Inetpub/iis_wwwroot/Quiz/data/TempFile.obj"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" qname="ns1:Choice" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:jomora.quiz.Choice" xmlns:ns1="urn:Quiz"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.ArrayDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" qname="ns2:ArrayOfChoice" serializer="org.apache.axis.encoding.ser.ArraySerializerFactory" type="java:jomora.quiz.Choice[]" xmlns:ns2="urn:Quiz"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" qname="ns3:Question" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:jomora.quiz.Question" xmlns:ns3="urn:Quiz"/>
+ </service>
+ <!--
+ <service name="AdminService" provider="java:MSG">
+  <parameter name="allowedMethods" value="AdminService"/>
+  <parameter name="enableRemoteAdmin" value="false"/>
+  <parameter name="className" value="org.apache.axis.utils.Admin"/>
+  <namespace>http://xml.apache.org/axis/wsdd/</namespace>
+ </service>
+ <service name="Version" provider="java:RPC">
+  <parameter name="allowedMethods" value="getVersion"/>
+  <parameter name="className" value="org.apache.axis.Version"/>
+ </service>
+ -->
+ <transport name="http">
+  <requestFlow>
+   <handler type="URLMapper"/>
+   <handler type="java:org.apache.axis.handlers.http.HTTPAuthHandler"/>
+  </requestFlow>
+  <parameter name="qs:list" value="org.apache.axis.transport.http.QSListHandler"/>
+  <parameter name="qs:wsdl" value="org.apache.axis.transport.http.QSWSDLHandler"/>
+  <parameter name="qs.list" value="org.apache.axis.transport.http.QSListHandler"/>
+  <parameter name="qs.method" value="org.apache.axis.transport.http.QSMethodHandler"/>
+  <parameter name="qs:method" value="org.apache.axis.transport.http.QSMethodHandler"/>
+  <parameter name="qs.wsdl" value="org.apache.axis.transport.http.QSWSDLHandler"/>
+ </transport>
+ <transport name="local">
+  <responseFlow>
+   <handler type="LocalResponder"/>
+  </responseFlow>
+ </transport>
+</deployment>
