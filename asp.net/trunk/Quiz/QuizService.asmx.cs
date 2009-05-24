@@ -1,133 +1,141 @@
-using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
+Ôªøusing System;
 using System.Web;
 using System.Web.Services;
+using System.ComponentModel;
 using System.Xml;
+using System.Configuration;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Web.Services.Protocols;
+using System.Web.Services.Description;
 
 namespace Quiz
 {
-	/// <summary>
-	/// Service1 ÇÃäTóvÇÃê‡ñæÇ≈Ç∑ÅB
-	/// </summary>
-	[WebService(Namespace="http://jomora.bne.jp/Quiz/")]
-	public class QuizService : System.Web.Services.WebService
-	{
-		private static ArrayList questionList;
-		private System.Random random = new System.Random();
+    /// <summary>
+    /// Quiz Web Service
+    /// </summary>
+    [WebService(Namespace = "http://jomora.net/Quiz/")]
+    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+    [ToolboxItem(false)]
+    //[SoapRpcService(Use = SoapBindingUse.Literal)]
+    public class QuizService : System.Web.Services.WebService
+    {
+        private static List<Question> m_questionList;
+        private static List<string> m_titles;
+        private System.Random m_random = new System.Random();
 
-		public QuizService()
-		{
-			//CODEGEN: Ç±ÇÃåƒÇ—èoÇµÇÕÅAASP.NET Web ÉTÅ[ÉrÉX ÉfÉUÉCÉiÇ≈ïKóvÇ≈Ç∑ÅB
-			InitializeComponent();
+        public QuizService()
+        {
+            if (m_questionList == null || m_questionList.Count == 0)
+            {
+                this.loadQuestion();
+            }
+        }
 
-			if (questionList == null || questionList.Count == 0) {
-				this.loadQuestion();
-			}
-		}
+        [WebMethod]
+        public int loadQuestion()
+        {
+            List<Question> questionList = new List<Question>();
+            List<string> titles = new List<string>();
 
-		#region ÉRÉìÉ|Å[ÉlÉìÉg ÉfÉUÉCÉiÇ≈ê∂ê¨Ç≥ÇÍÇΩÉRÅ[Éh 
-		
-		//Web ÉTÅ[ÉrÉX ÉfÉUÉCÉiÇ≈ïKóvÇ≈Ç∑ÅB
-		private IContainer components = null;
-				
-		/// <summary>
-		/// ÉfÉUÉCÉi ÉTÉ|Å[ÉgÇ…ïKóvÇ»ÉÅÉ\ÉbÉhÇ≈Ç∑ÅBÇ±ÇÃÉÅÉ\ÉbÉhÇÃì‡óeÇ
-		/// ÉRÅ[Éh ÉGÉfÉBÉ^Ç≈ïœçXÇµÇ»Ç¢Ç≈Ç≠ÇæÇ≥Ç¢ÅB
-		/// </summary>
-		private void InitializeComponent()
-		{
-		}
+            string qmlDir = ConfigurationManager.AppSettings["qmlDir"];
+            string[] files = System.IO.Directory.GetFiles(qmlDir, "*.qml");
+            // +.qml„Éï„Ç°„Ç§„É´„ÅÆË™≠„ÅøËæº„Åø
+            foreach (string file in files)
+            {
+                XmlDocument xmldoc = new XmlDocument();
+                xmldoc.Load(file);
+                // <question>
+                XmlNodeList questionNodeList = xmldoc.SelectNodes("/quiz/group/question");
+                foreach (XmlNode questionNode in questionNodeList)
+                {
+                    Question question = new Question();
+                    // <sentence>
+                    question.sentence = questionNode.SelectSingleNode("sentence").InnerText;
+                    // <choice>
+                    XmlNodeList choiceNodeList = questionNode.SelectNodes("choice");
+                    List<Choice> choiceList = new List<Choice>(choiceNodeList.Count);
+                    foreach (XmlNode choiceNode in choiceNodeList)
+                    {
+                        Choice choice = new Choice();
+                        bool correct = false;
+                        XmlNode correctAttrib = choiceNode.SelectSingleNode("@correct");
+                        if (correctAttrib != null
+                            && Boolean.TryParse(correctAttrib.Value, out correct))
+                        {
+                            choice.correct = correct;
+                        }
+                        choice.text = choiceNode.InnerText;
+                        choiceList.Add(choice);
+                    }
+                    question.choices = choiceList.ToArray();
+                    // <comment>
+                    question.comment = questionNode.SelectSingleNode("comment").InnerText;
 
-		/// <summary>
-		/// égópÇ≥ÇÍÇƒÇ¢ÇÈÉäÉ\Å[ÉXÇ…å„èàóùÇé¿çsÇµÇ‹Ç∑ÅB
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if(disposing && components != null)
-			{
-				components.Dispose();
-			}
-			base.Dispose(disposing);		
-		}
-		
-		#endregion
+                    // <group>
+                    question.groupName = questionNode.SelectSingleNode("../@name").Value;
+                    // <title>
+                    question.quizTitle = questionNode.SelectSingleNode("../../title").InnerText;
+                    if (!titles.Contains(question.quizTitle))
+                    {
+                        titles.Add(question.quizTitle);
+                    }
 
-		[WebMethod]
-		[System.Web.Services.Protocols.SoapRpcMethodAttribute("http://jomora.bne.jp/Quiz/loadQuestion",
-			 RequestNamespace="http://jomora.bne.jp/Quiz/",
-			 ResponseNamespace="http://jomora.bne.jp/Quiz/")]
-		public int loadQuestion() {
-			questionList = new ArrayList();
-			lock(questionList.SyncRoot) {
-				string qmlDir = System.Configuration.ConfigurationSettings.AppSettings["qmlDir"];
-				string[] files = System.IO.Directory.GetFiles(qmlDir, "*.qml");
-				// +.qmlÉtÉ@ÉCÉãÇÃì«Ç›çûÇ›
-				foreach (string file in files) {
-					XmlDocument xmldoc = new XmlDocument();
-					xmldoc.Load(file);
-					// <question>
-					XmlNodeList questionNodeList = xmldoc.SelectNodes("/quiz/group/question");
-					foreach (XmlNode questionNode in questionNodeList) {
-						try {
-							Question question = new Question();
-							// <sentence>
-							question.sentence = questionNode.SelectSingleNode("sentence").InnerText;
-							// <choice>
-							XmlNodeList choiceNodeList = questionNode.SelectNodes("choice");
-							ArrayList choiceList = new ArrayList(choiceNodeList.Count);
-							foreach (XmlNode choiceNode in choiceNodeList) {
-								Choice choice = new Choice();
-								choice.correct = Boolean.Parse(choiceNode.SelectSingleNode("@correct").Value);
-								choice.text = choiceNode.InnerText;
-								choiceList.Add(choice);
-							}
-							question.choices = choiceList.ToArray(typeof(Choice)) as Choice[];
-							// <comment>
-							question.comment = questionNode.SelectSingleNode("comment").InnerText;
-							// <title>
-							question.quizTitle = questionNode.SelectSingleNode("../../title").InnerText;
-							// <group>
-							question.groupName = questionNode.SelectSingleNode("../@name").Value;
+                    questionList.Add(question);
+                }
+            }
+            m_questionList = questionList;
+            m_titles = titles;
+            return questionList.Count;
+        }
 
-							questionList.Add(question);
-						} catch (Exception exp) {
-							System.Diagnostics.Trace.WriteLine(exp);
-						}
-					}
-				}
-			}
-			return questionList.Count;
-		}
+        [WebMethod]
+        public Question getQuestion()
+        {
+            return getQuestionByTitle(null);
+        }
 
-		[WebMethod]
-		[System.Web.Services.Protocols.SoapRpcMethodAttribute("http://jomora.bne.jp/Quiz/getQuestion",
-			 RequestNamespace="http://jomora.bne.jp/Quiz/",
-			 ResponseNamespace="http://jomora.bne.jp/Quiz/")]
-		public Question getQuestion() {
-			int num = random.Next(0, questionList.Count);
+        [WebMethod]
+        public string[] getTitles()
+        {
+            return m_titles.ToArray();
+        }
 
-			Question question = ((Question)questionList[num]).copy();
-			try {
-				Array.Sort(question.choices, new RandamComparer());
-			} catch(Exception exp) {
-				System.Diagnostics.Trace.WriteLine(exp);
-			}
-			return question;
-		}
-			
-	}
+        [WebMethod]
+        public Question getQuestionByTitle(string title)
+        {
+            List<Question> questionlist;
+            if (string.IsNullOrEmpty(title))
+            {
+                questionlist = m_questionList;
+            }
+            else
+            {
+                questionlist = m_questionList.FindAll(
+                delegate(Question q) { return q.quizTitle == title; });
+            }
 
-	public class RandamComparer : System.Collections.IComparer {
-		private const int MAX_NUM = 20;
-		private System.Random random = new System.Random();
-		
-		public int Compare(object x, object y) {
-			if (x.Equals(y)) return 0;
-			return random.Next(-1 * MAX_NUM, MAX_NUM);
-		}
+            if (questionlist.Count == 0)
+            {
+                return null;
+            }
+            int num = m_random.Next(0, questionlist.Count);
+            Question question = (questionlist[num]).copy();
+            //Array.Sort(question.choices, new RandamComparer());
+            question.choices = Shuffle(question.choices);
+            return question;
+        }
 
-	}
+        private Choice[] Shuffle(Choice[] choices)
+        {
+            List<Choice> list = new List<Choice>(choices);
+            for (int i = 0; i < list.Count; i++)
+            {
+                int index = m_random.Next(list.Count);
+                list.Add(list[index]);
+                list.RemoveAt(index);
+            }
+            return list.ToArray();
+        }
+    }
 }
