@@ -27,18 +27,16 @@ namespace Quiz
             Quiz.net.jomura.QuizService qs = new Quiz.net.jomura.QuizService();
             int count = qs.loadQuestion();
 
-            Debug.WriteLine("count : " + count);
+            Trace.TraceInformation("count : " + count);
 
-            /*
             //ソースが存在していない時は、作成する
             //IISプロセスユーザーにレジストリ権限が無い場合は、
             //SecurityExceptionが発生する。
-            if (!EventLog.SourceExists(GetType().FullName))
+            if (!EventLog.SourceExists("Quiz35"))
             {
                 //ログ名を空白にすると、"Application"となる
-                EventLog.CreateEventSource(GetType().FullName, string.Empty);
+                EventLog.CreateEventSource("Quiz35", "Application");
             }
-             */
             //事前にソース名をレジストリに登録しておく必要がある。
             EventLog.WriteEntry("Quiz35", "Quiz.LoadQuestionTask count : " + count);
         }
