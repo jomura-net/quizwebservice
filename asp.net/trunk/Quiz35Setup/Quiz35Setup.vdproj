@@ -50,6 +50,19 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.3.5"
+                    {
+                    "Name" = "8:.NET Framework 3.5"
+                    "ProductCode" = "8:Microsoft.Net.Framework.3.5"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
             }
         }
         "Release"
@@ -74,6 +87,19 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.3.5"
+                    {
+                    "Name" = "8:.NET Framework 3.5"
+                    "ProductCode" = "8:Microsoft.Net.Framework.3.5"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
             }
         }
     }
@@ -150,24 +176,6 @@
                     "Property" = "8:_A330A4BBDCAD435A8CE9BB76D1555A77"
                         "Folders"
                         {
-                            "{4C6F2762-250E-4E7D-82DC-65B304135C98}:_1E4F7C8AD2A84445B92C79288505E429"
-                            {
-                            "AllowScriptSourceAccess" = "11:FALSE"
-                            "AllowReadAccess" = "11:FALSE"
-                            "AllowWriteAccess" = "11:FALSE"
-                            "AllowDirectoryBrowse" = "11:FALSE"
-                            "LogVisits" = "11:TRUE"
-                            "Index" = "11:TRUE"
-                            "ExecutePermissions" = "3:2"
-                            "Name" = "8:bin"
-                            "AlwaysCreate" = "11:TRUE"
-                            "Condition" = "8:"
-                            "Transitive" = "11:FALSE"
-                            "Property" = "8:_FA45C145CB6D47D9BEF73A5DBDEE5633"
-                                "Folders"
-                                {
-                                }
-                            }
                         }
                     }
                 }
@@ -235,16 +243,16 @@
             {
                 "Keys"
                 {
-                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_D932D24E8DF24D8780F10C29D16EDD5D"
+                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_0FBAEC2ACBD84DE28DD8597519E37159"
                     {
-                    "Name" = "8:System"
+                    "Name" = "8:SYSTEM"
                     "Condition" = "8:"
                     "AlwaysCreate" = "11:FALSE"
                     "DeleteAtUninstall" = "11:FALSE"
                     "Transitive" = "11:FALSE"
                         "Keys"
                         {
-                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_1340977C38C64A1FA00821458CA4DDE3"
+                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_B17F83E596814DC2873505292FB3D3A3"
                             {
                             "Name" = "8:CurrentControlSet"
                             "Condition" = "8:"
@@ -253,7 +261,7 @@
                             "Transitive" = "11:FALSE"
                                 "Keys"
                                 {
-                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_29B20EB929364C2CBA8993326D17CFB3"
+                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_11B95B7CAF044396BBDD138087D779E3"
                                     {
                                     "Name" = "8:Services"
                                     "Condition" = "8:"
@@ -262,16 +270,16 @@
                                     "Transitive" = "11:FALSE"
                                         "Keys"
                                         {
-                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_3A45772213CC485FAA2F2968D5AACD90"
+                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_603966D37D314DCAB58B24AE67F14E45"
                                             {
-                                            "Name" = "8:EventLog"
+                                            "Name" = "8:Eventlog"
                                             "Condition" = "8:"
                                             "AlwaysCreate" = "11:FALSE"
                                             "DeleteAtUninstall" = "11:FALSE"
                                             "Transitive" = "11:FALSE"
                                                 "Keys"
                                                 {
-                                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_EB84E08C9E6C43EA92ADD24EBAE5CCEC"
+                                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_C4B323B2704C437DA37564D73C46AAE1"
                                                     {
                                                     "Name" = "8:Application"
                                                     "Condition" = "8:"
@@ -280,7 +288,7 @@
                                                     "Transitive" = "11:FALSE"
                                                         "Keys"
                                                         {
-                                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_10DC318B68424E1183519042C6574A25"
+                                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_A2CB00595E814A869D9D75202E914F04"
                                                             {
                                                             "Name" = "8:Quiz35"
                                                             "Condition" = "8:"
@@ -292,6 +300,30 @@
                                                                 }
                                                                 "Values"
                                                                 {
+                                                                    "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_483C68F131244659856FADA364CD7867"
+                                                                    {
+                                                                    "Name" = "8:EventMessageFile"
+                                                                    "Condition" = "8:"
+                                                                    "Transitive" = "11:FALSE"
+                                                                    "ValueTypes" = "3:1"
+                                                                    "Value" = "8:##%%SystemRoot%\\System32\\EventCreate.exe"
+                                                                    }
+                                                                    "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_4C7439D9AB3548B78AB085768143D30A"
+                                                                    {
+                                                                    "Name" = "8:TypesSupported"
+                                                                    "Condition" = "8:"
+                                                                    "Transitive" = "11:FALSE"
+                                                                    "ValueTypes" = "3:3"
+                                                                    "Value" = "3:7"
+                                                                    }
+                                                                    "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_8E3F537B3BBD465CABCD10F90D67DB6D"
+                                                                    {
+                                                                    "Name" = "8:CustomSource"
+                                                                    "Condition" = "8:"
+                                                                    "Transitive" = "11:FALSE"
+                                                                    "ValueTypes" = "3:3"
+                                                                    "Value" = "3:1"
+                                                                    }
                                                                 }
                                                             }
                                                         }

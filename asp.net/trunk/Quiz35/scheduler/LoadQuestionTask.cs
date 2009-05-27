@@ -32,13 +32,16 @@ namespace Quiz
             //ソースが存在していない時は、作成する
             //IISプロセスユーザーにレジストリ権限が無い場合は、
             //SecurityExceptionが発生する。
+            /*
             if (!EventLog.SourceExists("Quiz35"))
             {
                 //ログ名を空白にすると、"Application"となる
                 EventLog.CreateEventSource("Quiz35", "Application");
             }
+             */
             //事前にソース名をレジストリに登録しておく必要がある。
-            EventLog.WriteEntry("Quiz35", "Quiz.LoadQuestionTask count : " + count);
+            EventLog.WriteEntry("Quiz35", "Quiz.LoadQuestionTask count : " + count,
+                EventLogEntryType.Information, 100);
         }
 
         public bool IsFinish()

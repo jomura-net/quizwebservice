@@ -74,12 +74,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App_Data\OracleMaster9iSilver.qml" />
+    <None Include="CreateEventSource.bat" />
     <None Include="key.snk" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Quiz35.reg" />
     <None Include="Web References\net.jomura\Question.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
