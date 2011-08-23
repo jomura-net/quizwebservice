@@ -49,33 +49,33 @@ public class QuizServiceImpl implements QuizService {
 
 	@SuppressWarnings("unchecked")
 	public void init() {
-		File qmlDir = new File(application.getInitParameter("qmlDir"));
-        if (!qmlDir.exists()) {
-            throw new RuntimeException("qmlDirを正しく設定してください。");
-        }
-		
-        File tmpFilePath = new File(application.getInitParameter("TempFilePath"));
-        if (tmpFilePath.exists()) {
-			FileInputStream fis = null;
-			ObjectInputStream ois = null;
-			try {
-				fis = new FileInputStream(tmpFilePath);
-				ois = new ObjectInputStream(fis);
-				questionList = (List<Question>) ois.readObject();
-				log.info("Loaded questionList from " + tmpFilePath);
-			} catch (IOException e) {
-				log.warning("Failed to load TempFile (" + e.getMessage() + ")");
-			} catch (ClassNotFoundException e) {
-				log.warning("Failed to load TempFile (" + e.getMessage() + ")");
-			} finally {
-				IOUtils.closeQuietly(ois);
-				IOUtils.closeQuietly(fis);
-			}
-        } else {
-        	
-        }
+		if (null == questionList) {
+			File qmlDir = new File(application.getInitParameter("qmlDir"));
+	        if (!qmlDir.exists()) {
+	            throw new RuntimeException("qmlDirを正しく設定してください。");
+	        }
+			
+	        File tmpFilePath = new File(application.getInitParameter("TempFilePath"));
+	        if (tmpFilePath.exists()) {
+				FileInputStream fis = null;
+				ObjectInputStream ois = null;
+				try {
+					fis = new FileInputStream(tmpFilePath);
+					ois = new ObjectInputStream(fis);
+					questionList = (List<Question>) ois.readObject();
+					log.info("Loaded questionList from " + tmpFilePath);
+				} catch (IOException e) {
+					log.warning("Failed to load TempFile (" + e.getMessage() + ")");
+				} catch (ClassNotFoundException e) {
+					log.warning("Failed to load TempFile (" + e.getMessage() + ")");
+				} finally {
+					IOUtils.closeQuietly(ois);
+					IOUtils.closeQuietly(fis);
+				}
+	        }
+		}
 
-		if (questionList == null || questionList.isEmpty()) {
+		if (null == questionList || questionList.isEmpty()) {
 			this.loadQuestions();
 		}
 	}
@@ -113,7 +113,11 @@ public class QuizServiceImpl implements QuizService {
             return -1;
         }
 
-        long startTime = System.currentTimeMillis();
+        return refreshQuestions();
+	}
+
+	public int refreshQuestions() {
+		long startTime = System.currentTimeMillis();
 
         synchronized(QuizServiceImpl.class) {
 
