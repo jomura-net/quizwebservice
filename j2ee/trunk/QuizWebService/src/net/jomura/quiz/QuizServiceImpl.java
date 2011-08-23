@@ -7,6 +7,8 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -105,14 +107,22 @@ public class QuizServiceImpl implements QuizService {
 	public Question getQuestion(Map<String, String> params) {
 		List<Question> tmpQuestionList = questionList;
 		String title = params.get("title");
-		if (null != title && titleList.contains(title)) {
-			// 絞り込み
-			tmpQuestionList = new ArrayList<Question>();
-			for (Question q : questionList) {
-				if (title.equals(q.getQuizTitle())) {
-					tmpQuestionList.add(q);
+		try {
+			if (null != title) {
+				int index = Integer.parseInt(title);
+				title = titleList.get(index);
+				if (titleList.contains(title)) {
+					// 絞り込み
+					tmpQuestionList = new ArrayList<Question>();
+					for (Question q : questionList) {
+						if (title.equals(q.getQuizTitle())) {
+							tmpQuestionList.add(q);
+						}
+					}
 				}
 			}
+		} catch (NumberFormatException e) {
+			// do nothing
 		}
 		
         int num = (int)(Math.random() * tmpQuestionList.size());

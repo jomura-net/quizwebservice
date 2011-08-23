@@ -20,8 +20,11 @@
           success: function(titles) {
     	      for (var title in titles) {
                   $('#quiz_titles').append($('<option value="'
-                		  + titles[title] + '">' + titles[title] + '</option>'));
+                		  + title + '">' + titles[title] + '</option>'));
     	      }
+    	      $('#quiz_next').html("<input type=\"button\" id=\"quiz_reload\""
+    	    		  + " value=\"next\" onclick=\"quiz_refresh();\""
+    	    		  +	" style=\"border-style:none;\" />");
           },
           error: function(xhr, status, errorThrown) {
               $('#quiz_sentence').html("service not available.(" + status + ")");

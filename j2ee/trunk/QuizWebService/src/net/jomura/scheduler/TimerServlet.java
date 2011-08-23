@@ -3,6 +3,7 @@ package net.jomura.scheduler;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -42,8 +43,11 @@ public class TimerServlet extends HttpServlet {
 		Date firstTime = cal.getTime();
 
 		timer1 = new Timer();
-		timer1.scheduleAtFixedRate(new QuizDataRefreshTimer(getServletContext()), firstTime, peroid); 
+		TimerTask task = new QuizDataRefreshTimer(getServletContext());
+		timer1.scheduleAtFixedRate(task, firstTime, peroid); 
 		log("Task scheduled.  firstTime:" + firstTime + "  period:" + peroid + "[ms]");
+
+		task.run();
 	}
 	
 	@Override
