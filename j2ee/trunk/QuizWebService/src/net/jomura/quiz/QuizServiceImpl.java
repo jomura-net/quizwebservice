@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
@@ -36,9 +37,14 @@ import org.xml.sax.SAXException;
 public class QuizServiceImpl implements QuizService {
 
     /**
-     * 設問データ
+     * 設問データリスト
      */
     private static List<Question> questionList;
+
+    /**
+     * 設問分類
+     */
+    private static List<String> titleList;
 
 	// injects context object. but default container only.
 	public ServletContext application;
@@ -63,6 +69,7 @@ public class QuizServiceImpl implements QuizService {
 					fis = new FileInputStream(tmpFilePath);
 					ois = new ObjectInputStream(fis);
 					questionList = (List<Question>) ois.readObject();
+			        setTitleList();
 					log.info("Loaded questionList from " + tmpFilePath);
 				} catch (IOException e) {
 					log.warning("Failed to load TempFile (" + e.getMessage() + ")");
@@ -88,9 +95,28 @@ public class QuizServiceImpl implements QuizService {
 	 */
 	@Override
 	public Question getQuestion() {
-        int num = (int)(Math.random() * questionList.size());
+        return getQuestion(null);
+	}
 
-        Question question = questionList.get(num);
+	/*
+	 * @see net.jomura.quiz.QuizService#getQuestion(String)
+	 */
+	@Override
+	public Question getQuestion(Map<String, String> params) {
+		List<Question> tmpQuestionList = questionList;
+		String title = params.get("title");
+		if (null != title && titleList.contains(title)) {
+			// 絞り込み
+			tmpQuestionList = new ArrayList<Question>();
+			for (Question q : questionList) {
+				if (title.equals(q.getQuizTitle())) {
+					tmpQuestionList.add(q);
+				}
+			}
+		}
+		
+        int num = (int)(Math.random() * tmpQuestionList.size());
+        Question question = tmpQuestionList.get(num);
 
         Arrays.sort(question.getChoices(), new Comparator<Choice>() {
             public int compare(Choice o1, Choice o2) {
@@ -137,10 +163,11 @@ public class QuizServiceImpl implements QuizService {
 	            File file = qmlFiles[i];
 	            log.finer(file.getName());
 
-	            extractQuestions(xpath, newQuestionList, file);
+	            extractQuestions(file, newQuestionList, xpath);
 	        }
 	
 	        questionList = newQuestionList;
+	        setTitleList();
 	        
 	        //questionListオブジェクトをファイル保存
 	        String tmpFilePathStr = application.getInitParameter("TempFilePath");
@@ -167,13 +194,7 @@ public class QuizServiceImpl implements QuizService {
         return questionList.size();
 	}
 
-	/**
-	 * @param xpath
-	 * @param newQuestionList
-	 * @param file
-	 */
-	private void extractQuestions(XPath xpath,
-			List<Question> newQuestionList, File file) {
+	private void extractQuestions(File file, List<Question> newQuestionList, XPath xpath) {
 		try {
 		    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		    dbf.setNamespaceAware(false);
@@ -238,6 +259,21 @@ public class QuizServiceImpl implements QuizService {
 		} catch (IOException e) {
 		    throw new RuntimeException(e);
 		}
+	}
+
+	@Override
+	public String[] getTitles() {
+		return titleList.toArray(new String[0]);
+	}
+
+	private void setTitleList() {
+        List<String> newTitleList = new ArrayList<String>();
+		for (Question q : questionList) {
+		    if (!newTitleList.contains(q.getQuizTitle())) {
+		    	newTitleList.add(q.getQuizTitle());
+		    }
+		}
+		titleList = newTitleList;
 	}
 
 }

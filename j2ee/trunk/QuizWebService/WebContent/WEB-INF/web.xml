@@ -11,7 +11,7 @@
       <param-name>config</param-name>
       <param-value>
           mappings: {
-              '/{class}.{method:getQuestion|loadQuestions}.json': {
+              '/{class}.{method:getQuestion|loadQuestions|getTitles}.json': {
                   'target': 'net.jomura.quiz.${class}ServiceImpl', 
                   'verb': 'GET'
               }

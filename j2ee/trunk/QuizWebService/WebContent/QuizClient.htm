@@ -1,19 +1,20 @@
   <div id="quiz">
   <fieldset style="padding:8px; border-color:#ADD8E6;">
-  <legend style="color:green;">Have a Try !</legend>
+  <legend style="color:green;">Have a Try ! &nbsp; 
+    <select id="quiz_titles">
+      <option value=""> - </option>
+    </select>
+    <input type="button" id="quiz_reload" value="next" onclick="quiz_refresh();"
+         style="border-style:none;" />
+  </legend>
 
   <noscript>JavaScriptはお嫌いですか？そうですか。。。</noscript>
   <div id="quiz_sentence"></div>
   <div id="quiz_choices"></div>
   <input type="hidden" id="quiz_comment" value="" />
   <div id="quiz_answer">
-      <input type="button" id="quiz_submit" value="判定" onclick="answer();"
-             style="border-top:1px none; border-left:1px none;
-                    background:rgb(221, 255, 238) none repeat scroll 0% 0%;
-                    -moz-background-clip:-moz-initial;
-                    -moz-background-origin:-moz-initial;
-                    -moz-background-inline-policy: -moz-initial;
-                    visibility:hidden" />
+      <input type="button" id="quiz_submit" value="判定" onclick="quiz_answer();"
+             style="border-style:solid;" />
   </div>
 
   <script src="jquery-1.6.2.min.js" type="text/javascript"></script>
