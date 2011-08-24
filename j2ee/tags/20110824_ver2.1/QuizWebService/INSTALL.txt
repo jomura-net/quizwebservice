@@ -1,0 +1,8 @@
+1) quiz.warファイル中のweb.xmlファイルを編集する。
+・qmlDir … *.qmlファイルがあるフォルダ。
+・TempFilePath … quizデータ一時ファイル名（フルパス）。 書き込み可能なディレクトリを指定する。
+・FirstTime … quizデータを日次で自動再ロードする時刻(最初の1回目) [optional]
+・Period … quizデータを日次で自動再ロードする時間間隔 [optional]
+2) *.qmlファイル、quizデータ一時ファイルを格納するフォルダを設置する。
+3) quiz.warファイルを設置する。
+4) ブラウザで、/quiz/ を参照して動作確認。
