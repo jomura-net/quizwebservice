@@ -55,7 +55,12 @@ public class QuizServiceImpl implements QuizService {
 
 	@SuppressWarnings("unchecked")
 	public void init() {
-		if (null == questionList) {
+        // セッションは使わない。
+        if (null != request) {
+            request.getSession(false);
+        }
+
+        if (null == questionList) {
 			File qmlDir = new File(application.getInitParameter("qmlDir"));
 	        if (!qmlDir.exists()) {
 	            throw new RuntimeException("qmlDirを正しく設定してください。");
